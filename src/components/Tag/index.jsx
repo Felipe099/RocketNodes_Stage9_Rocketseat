@@ -1,9 +1,9 @@
-import { Container } from './style';
+import { Container } from './styles';
 import PropTypes from 'prop-types';
 
-export function Tag({ title }) {
+export function Tag({ title, ...rest }) {
   return(
-    <Container>
+    <Container {...rest}>
       {title}
     </Container>
   )
