@@ -1,4 +1,5 @@
 import { FiMail, FiLock } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 import { Container, Form, Background } from './styles';
 
@@ -18,7 +19,7 @@ export function SignIn() {
                 <Input placeholder="Senha" type="password" icon={FiLock} />
 
                 <Button title="Entrar" />
-                <a href="#">Criar Conta</a>
+                <Link to="/register">Criar Conta</Link>
             </Form>
 
             <Background />
