@@ -48,18 +48,21 @@ export function SignUp() {
                     placeholder="Nome"
                     type="text"
                     icon={FiUser}
+                    autoComplete="current-name"
                     onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                     placeholder="E-mail"
                     type="text"
                     icon={FiMail}
+                    autoComplete="current-email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <Input
                     placeholder="Senha"
                     type="password"
                     icon={FiLock}
+                    autoComplete="current-password"
                     onChange={(e) => setPassword(e.target.value)}
                 />
 
