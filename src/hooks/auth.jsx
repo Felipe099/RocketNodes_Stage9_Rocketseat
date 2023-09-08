@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { api } from '../services/index';
+import { api } from '../services/api';
 
 export const AuthContext = createContext({});
 
@@ -16,7 +16,7 @@ function AuthProvider({ children }) {
             localStorage.setItem('@rocketnotes:user', JSON.stringify(user));
             localStorage.setItem('@rocketnotes:token', token);
 
-            api.defaults.headers.authorization = `Barear ${token}`;
+            api.defaults.headers.common['Authorization'] = `Barear ${token}`;
             setData({ user, token });
         } catch (error) {
             if (error.response) {
@@ -34,12 +34,35 @@ function AuthProvider({ children }) {
         setData({});
     }
 
+    async function updatedProfile({ user, avatarFile }) {
+        try {
+            const fileUploadForm = new FormData();
+            fileUploadForm.append('avatar', avatarFile);
+
+            const response = await api.patch('/users/avatar/', fileUploadForm);
+            user.avatar = response.data.avatar;
+
+            await api.put('/users', user);
+            localStorage.setItem('@rocketnotes:user', JSON.stringify(user));
+
+            setData({ user, token: data.token });
+            alert('Perfil atualizado com sucesso!');
+        } catch (error) {
+            if (error.response) {
+                alert(error.response.data.message);
+            } else {
+                alert('Não foi possível atualizar o perfil');
+            }
+        }
+    }
+
     useEffect(() => {
         const user = localStorage.getItem('@rocketnotes:user');
         const token = localStorage.getItem('@rocketnotes:token');
 
         if (user && token) {
-            api.defaults.headers.authorization = `Barear ${token}`;
+            api.defaults.headers.common['Authorization'] = `Barear ${token}`;
+
             setData({ user: JSON.parse(user), token });
         }
     }, []);
@@ -48,6 +71,7 @@ function AuthProvider({ children }) {
             value={{
                 signIn,
                 signOut,
+                updatedProfile,
                 user: data.user,
             }}
         >

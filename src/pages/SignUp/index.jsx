@@ -2,7 +2,7 @@ import { FiMail, FiLock, FiUser } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useState } from 'react';
-import { api } from '../../services/index';
+import { api } from '../../services/api';
 
 import { Container, Form, Background } from './styles';
 
