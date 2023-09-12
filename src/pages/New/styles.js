@@ -11,12 +11,6 @@ export const Container = styled.div`
         'header'
         'content';
 
-    .tags {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
     > main {
         grid-area: content;
         overflow-y: auto;
@@ -25,7 +19,7 @@ export const Container = styled.div`
 `;
 
 export const Form = styled.form`
-    max-width: 550px;
+    max-width: 800px;
     margin: 38px auto;
 
     > header {
@@ -39,5 +33,10 @@ export const Form = styled.form`
             font-size: 20px;
             color: ${({ theme }) => theme.COLORS.GRAY_100};
         }
+    }
+
+    .tags {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 `;
