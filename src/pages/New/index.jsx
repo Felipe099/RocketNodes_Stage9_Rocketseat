@@ -42,11 +42,26 @@ export function New() {
     }
 
     async function hundleNewNote() {
+        if (!title) {
+            return alert('Adcione um titulo a nota para salvar.');
+        }
+
+        if (newLink) {
+            return alert(
+                'Você deixou um link no campo adicionar, mas não clicou em adicionar, retire o link ou clique em adicionar para salvar.'
+            );
+        }
+        if (newTag) {
+            return alert(
+                'Você deixou uma tag no campo adicionar, mas não clicou em adicionar, retire a tag ou clique em adicionar para salvar.'
+            );
+        }
+
         await api.post('/notes', {
             title,
             description,
             tags,
-            links
+            links,
         });
 
         alert('Nota cadastrada com sucesso!');
