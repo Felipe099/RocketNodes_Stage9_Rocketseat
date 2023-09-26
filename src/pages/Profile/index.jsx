@@ -1,5 +1,5 @@
 import { Container, Form, Avatar } from './styles';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/auth';
 import { useState } from 'react';
@@ -13,6 +13,8 @@ import { Input } from '../../components/Input';
 import { Button } from '../../components/Button';
 
 export function Profile({ ...rest }) {
+    const navigate = useNavigate();
+
     const { user, updatedProfile } = useAuth();
     const [name, setName] = useState(user.name);
     const [email, setEmail] = useState(user.email);
@@ -26,13 +28,16 @@ export function Profile({ ...rest }) {
     const [avatarFile, setAvatarFile] = useState(null);
 
     async function hundleUpdate() {
-        const user = {
+        const updated = {
             name,
             email,
             old_password: passwordOld,
             password: passwordNew,
         };
-        await updatedProfile({ user, avatarFile });
+
+        const userUpdated = Object.assign(user, updated);
+
+        await updatedProfile({ user: userUpdated, avatarFile });
     }
 
     async function hundleChangeAvatar(event) {
@@ -43,12 +48,16 @@ export function Profile({ ...rest }) {
         setAvatar(imagePreview);
     }
 
+    function hundleBack() {
+        navigate(-1);
+    }
+
     return (
         <Container {...rest}>
             <header>
-                <Link to="/">
-                    <FiArrowLeft />
-                </Link>
+                <button type="button" onClick={hundleBack}>
+                    <FiArrowLeft size={24} />
+                </button>
             </header>
 
             <Form>

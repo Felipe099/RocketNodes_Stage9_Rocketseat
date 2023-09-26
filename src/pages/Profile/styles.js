@@ -18,6 +18,11 @@ export const Container = styled.div`
             font-size: 24px;
             color: ${({ theme }) => theme.COLORS.WHITE};
         }
+
+        button {
+            background: none;
+            border: none;
+        }
     }
 `;
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container, Form } from './styles';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { api } from '../../services/api';
 
@@ -10,6 +10,7 @@ import { Textarea } from '../../components/Textarea';
 import { Section } from '../../components/Section';
 import { NoteItem } from '../../components/NoteItem';
 import { Button } from '../../components/Button';
+import { ButtonText } from '../../components/ButtonText';
 
 export function New() {
     const [title, setTitle] = useState('');
@@ -41,6 +42,10 @@ export function New() {
         setTags((prevState) => prevState.filter((tag) => tag !== deleted));
     }
 
+    function hundleBack() {
+        navigate(-1);
+    }
+
     async function hundleNewNote() {
         if (!title) {
             return alert('Adcione um titulo a nota para salvar.');
@@ -56,6 +61,12 @@ export function New() {
                 'Você deixou uma tag no campo adicionar, mas não clicou em adicionar, retire a tag ou clique em adicionar para salvar.'
             );
         }
+        if (links.length === 0) {
+            return alert('Adicione pelo menos um Link');
+        }
+        if (tags.length === 0) {
+            return alert('Adicione pelo menos uma tag');
+        }
 
         await api.post('/notes', {
             title,
@@ -66,7 +77,7 @@ export function New() {
 
         alert('Nota cadastrada com sucesso!');
 
-        navigate('/');
+        navigate(-1);
     }
     return (
         <Container>
@@ -76,7 +87,7 @@ export function New() {
                 <Form>
                     <header>
                         <h1>Criar nota</h1>
-                        <Link to="/">voltar</Link>
+                        <ButtonText onClick={hundleBack} title={'Voltar'} />
                     </header>
 
                     <Input

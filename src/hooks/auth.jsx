@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 
 import { api } from '../services/api';
@@ -28,19 +29,27 @@ function AuthProvider({ children }) {
     }
 
     function signOut() {
-        localStorage.removeItem('@rocketnotes:user');
-        localStorage.removeItem('@rocketnotes:token');
+        const confirm = window.confirm('Deseja mesmo sair?');
 
-        setData({});
+        if (confirm === true) {
+            localStorage.removeItem('@rocketnotes:user');
+            localStorage.removeItem('@rocketnotes:token');
+            setData({});
+        }
     }
 
     async function updatedProfile({ user, avatarFile }) {
         try {
-            const fileUploadForm = new FormData();
-            fileUploadForm.append('avatar', avatarFile);
+            if (avatarFile) {
+                const fileUploadForm = new FormData();
+                fileUploadForm.append('avatar', avatarFile);
 
-            const response = await api.patch('/users/avatar/', fileUploadForm);
-            user.avatar = response.data.avatar;
+                const response = await api.patch(
+                    '/users/avatar/',
+                    fileUploadForm
+                );
+                user.avatar = response.data.avatar;
+            }
 
             await api.put('/users', user);
             localStorage.setItem('@rocketnotes:user', JSON.stringify(user));
